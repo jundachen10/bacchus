@@ -1,0 +1,20 @@
+# Ignore Python bytecode
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Ignore virtual environment
+venv/
+
+# Ignore macOS system files
+.DS_Store
+
+# Ignore JSON and database files (if used for local data storage)
+*.json
+*.db
+
+# Ignore logs (if you add any in the future)
+*.log
+
+# Ignore environment variable files (if you store secrets or config)
+.env
