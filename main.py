@@ -31,12 +31,16 @@ def main(stdscr):
         key = stdscr.getch()
 
         # Handle key inputs
-        if key == ord('='):
+        if key in [ord('2'), ord('3'), ord('4'), ord('5')]:
             counter.add()
-        elif key == ord('-'):
+        elif key in [ord('6'), ord('7'), ord('8'), ord('9')]:
             counter.subtract()
-        elif key == ord('r'):
-            counter.reset()
+        elif key == ord('p'):
+            counter.record_outcome('Player Win')
+        elif key == ord('b'):
+            counter.record_outcome('Banker Win')
+        elif key == ord('t'):
+            counter.record_outcome('Tie')
         elif key == ord('q'):
             break
 
