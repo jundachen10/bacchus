@@ -15,8 +15,14 @@ def display_hand_history(stdscr, hand_history):
     """Displays the result history of each hand along with the running counts."""
     stdscr.addstr(5, 0, "Hand History:")
     for i, hand in enumerate(hand_history, start=1):
-        stdscr.addstr(i + 5, 0, f"Hand {i}: {hand['result']} | Running Count: {hand['running_count']}")
+        input_sequence = ', '.join(hand['inputs'])  # Join inputs into a string
+        stdscr.addstr(
+            i + 5,
+            0,
+            f"Hand {i}: {hand['result']} | Running Count: {hand['running_count']} | Inputs: {input_sequence}"
+            )
     stdscr.refresh()
+
 
 def main(stdscr):
     # Set up curses
@@ -26,8 +32,9 @@ def main(stdscr):
 
     # Initialize counter
     counter = Counter()
-    hand_history = []  # List to store each hand result and running count as dictionaries
-
+    hand_history = []
+    # List to store each hand result and running count as dictionaries
+    current_inputs = []  # List to track inputs for the current hand
 
     # Display instructions
     stdscr.addstr(0, 0, "Card Counting App - Press '2' through '9' to count cards")
@@ -50,21 +57,47 @@ def main(stdscr):
             action = "No Change"
         elif key in [ord("2"), ord("3"), ord("4"), ord("5")]:
             counter.add()
+            current_inputs.append(chr(key))
             action = "Add"
         elif key in [ord("6"), ord("7"), ord("8"), ord("9")]:
             counter.subtract()
+            current_inputs.append(chr(key))
             action = "Subtract"
+            
+        # Key inputs for game results    
         elif key == ord("p"):
-            hand_history.append({"result": "Player Win", "running_count": counter.get_current_count()})
+            hand_history.append(
+                {
+                    "result": "Player Win",
+                    "running_count": counter.get_current_count(),
+                    "inputs": current_inputs.copy(),
+                }
+            )
             display_hand_history(stdscr, hand_history)
+            current_inputs = []
         elif key == ord("b"):
-            hand_history.append({"result": "Banker Win", "running_count": counter.get_current_count()})
+            hand_history.append(
+                {
+                    "result": "Banker Win",
+                    "running_count": counter.get_current_count(),
+                    "inputs": current_inputs.copy(),
+                }
+            )
             display_hand_history(stdscr, hand_history)
+            current_inputs = []
         elif key == ord("t"):
-            hand_history.append({"result": "Tie", "running_count": counter.get_current_count()})
+            hand_history.append(
+                {
+                    "result": "Tie",
+                    "running_count": counter.get_current_count(),
+                    "inputs": current_inputs.copy(),
+                }
+            )
             display_hand_history(stdscr, hand_history)
+            current_inputs = []
         elif key == ord("q"):
             break
+
 
 # Run the curses application
 if __name__ == "__main__":
