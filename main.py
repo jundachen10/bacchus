@@ -15,17 +15,22 @@ def format_message(current_count, total_count):
     return f"Current Count: {current_count} | Total Count: {total_count}"
 
 
-# this will error out when it reaches max terminal screen length cuz .addstr
 def display_hand_history(stdscr, hand_history):
-    """Displays the result history of each hand along with the running counts."""
-    stdscr.addstr(5, 0, "Hand History:")
-    for i, hand in enumerate(hand_history, start=1):
+    """Displays the last 10 results of each hand along with the running counts."""
+    stdscr.clear()
+    stdscr.addstr(5, 0, "Hand History (showing last 10):")
+    
+    # Calculate the starting index for the last 10 entries, or start at 0 if fewer than 10
+    start_index = max(0, len(hand_history) - 10)
+    
+    for i, hand in enumerate(hand_history[start_index:], start=1):
         input_sequence = ', '.join(hand['inputs'])  # Join inputs into a string
         stdscr.addstr(
             i + 5,
             0,
-            f"Hand {i}: {hand['result']} | Running Count: {hand['running_count']} | Inputs: {input_sequence}"
-            )
+            f"Hand {start_index + i}: {hand['result']} | Running Count: {hand['running_count']} | Inputs: {input_sequence}"
+        )
+        
     stdscr.refresh()
 
 
