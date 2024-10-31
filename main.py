@@ -4,6 +4,11 @@ import curses
 import json
 from counter import Counter
 
+def save_to_json(hand_history):
+    """Saves hand history to a JSON file."""
+    with open('hand_history.json', 'w') as f:
+        json.dump(hand_history, f, indent=4)  # Write with indentation for readability
+
 
 def format_message(current_count, total_count):
     """Returns a formatted string with the current and total counts."""
@@ -96,6 +101,13 @@ def main(stdscr):
             )
             display_hand_history(stdscr, hand_history)
             current_inputs = []
+            
+        elif key == ord("s"):  # Save key
+            save_to_json(hand_history)
+            stdscr.addstr(4, 0, "Hand history saved to 'hand_history.json'     ")  # Feedback message
+            stdscr.refresh()
+            stdscr.getch()  # Wait for a key press to continue
+            
         elif key == ord("q"):
             break
 
