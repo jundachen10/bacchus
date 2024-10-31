@@ -54,6 +54,7 @@ def main(stdscr):
 
         # Handle key inputs
         if key in [ord("0"), ord("1")]:
+            current_inputs.append(chr(key))
             action = "No Change"
         elif key in [ord("2"), ord("3"), ord("4"), ord("5")]:
             counter.add()
